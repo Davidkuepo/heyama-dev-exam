@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { ObjectsList } from '@/components/objects-list';
 import { CreateObjectDialog } from '@/components/create-object-dialog';
 import { Header } from '@/components/header';
+import { PrivateRoute } from '@/components/private-route';
 
 export default function Home() {
   const [refreshTrigger, setRefreshTrigger] = useState(0);
@@ -17,9 +18,10 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-950 dark:to-slate-900">
-      <Header />
-      <main className="container mx-auto px-4 py-8 sm:py-12">
+    <PrivateRoute>
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-950 dark:to-slate-900">
+        <Header />
+        <main className="container mx-auto px-4 py-8 sm:py-12">
         <div className="flex flex-col gap-8">
           <div className="flex flex-col items-center gap-4 text-center">
             <h1 className="text-4xl sm:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400">
@@ -41,5 +43,6 @@ export default function Home() {
         </div>
       </main>
     </div>
+    </PrivateRoute>
   );
 }

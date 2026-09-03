@@ -2,9 +2,10 @@
 
 import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import axios from 'axios';
+import apiClient from '@/lib/axios';
 import { ArrowLeft, Loader2, AlertCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { PrivateRoute } from '@/components/private-route';
 
 interface Object {
   _id: string;
@@ -24,7 +25,7 @@ export default function ObjectDetailPage() {
   useEffect(() => {
     const fetchObject = async () => {
       try {
-        const response = await axios.get(`http://localhost:3000/objects/${params.id}`);
+        const response = await apiClient.get(`/objects/${params.id}`);
         setObject(response.data);
       } catch (err) {
         setError('Failed to load object');
@@ -68,8 +69,9 @@ export default function ObjectDetailPage() {
   });
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-950 dark:to-slate-900">
-      <div className="container mx-auto px-4 py-8">
+    <PrivateRoute>
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-950 dark:to-slate-900">
+        <div className="container mx-auto px-4 py-8">
         <Button
           onClick={() => router.push('/')}
           variant="ghost"
@@ -139,6 +141,7 @@ export default function ObjectDetailPage() {
           </div>
         </div>
       </div>
-    </div>
+      </div>
+    </PrivateRoute>
   );
 }

@@ -5,15 +5,19 @@ import {
   Delete,
   Param,
   UseInterceptors,
+  UseGuards,
   UploadedFile,
   Body,
   BadRequestException,
+  Req,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ObjectsService } from './objects.service';
+import { JwtAuthGuard } from '../auth/jwt.guard';
 import { CreateObjectDto } from './dto/create-object.dto';
 
 @Controller('objects')
+@UseGuards(JwtAuthGuard)
 export class ObjectsController {
   constructor(private readonly objectsService: ObjectsService) {}
 

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import axios from 'axios';
+import apiClient from '@/lib/axios';
 import { Loader2 } from 'lucide-react';
 import { ObjectCard } from './object-card';
 import { useSocket } from './socket-provider';
@@ -28,7 +28,7 @@ export function ObjectsList({ refreshTrigger, onDeleted }: ObjectsListProps) {
     queryKey: ['objects', refreshTrigger],
     queryFn: async () => {
       try {
-        const response = await axios.get('http://localhost:3000/objects');
+        const response = await apiClient.get('/objects');
         return response.data;
       } catch (error) {
         console.error('Failed to fetch objects:', error);
@@ -68,7 +68,7 @@ export function ObjectsList({ refreshTrigger, onDeleted }: ObjectsListProps) {
 
   const handleDelete = async (id: string) => {
     try {
-      await axios.delete(`http://localhost:3000/objects/${id}`);
+      await apiClient.delete(`/objects/${id}`);
       onDeleted();
     } catch (error) {
       console.error('Failed to delete object:', error);

@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import axios from 'axios';
+import apiClient from '@/lib/axios';
 import { Plus, Upload, Loader2, CheckCircle, AlertCircle } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
@@ -58,7 +58,7 @@ export function CreateObjectDialog({ onSuccess }: CreateObjectDialogProps) {
       formData.append('description', data.description);
       formData.append('image', data.image);
 
-      await axios.post('http://localhost:3000/objects', formData, {
+      await apiClient.post('/objects', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
