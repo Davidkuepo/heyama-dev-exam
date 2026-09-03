@@ -1,0 +1,51 @@
+{
+  "nav": {
+    "gallery": "Galerie",
+    "docs": "Docs",
+    "logout": "Déconnexion"
+  },
+  "home": {
+    "title": "Galerie d'Objets",
+    "subtitle": "Créer, gérer et présenter vos objets avec de belles images",
+    "create": "Créer un Objet"
+  },
+  "auth": {
+    "login": "Connexion",
+    "register": "Inscription",
+    "signup": "S'inscrire",
+    "email": "Email",
+    "password": "Mot de passe",
+    "name": "Nom complet",
+    "confirmPassword": "Confirmer le mot de passe",
+    "submit": "Soumettre",
+    "noAccount": "Pas encore de compte?",
+    "haveAccount": "Vous avez déjà un compte?",
+    "loginHere": "Connectez-vous ici",
+    "registerHere": "Inscrivez-vous ici",
+    "invalidEmail": "Email invalide",
+    "passwordTooShort": "Le mot de passe doit avoir au moins 6 caractères",
+    "nameTooShort": "Le nom doit avoir au moins 3 caractères",
+    "passwordsDoNotMatch": "Les mots de passe ne correspondent pas",
+    "emailExists": "L'email existe déjà",
+    "invalidCredentials": "Email ou mot de passe invalide",
+    "registerSuccess": "Compte créé avec succès!",
+    "loginSuccess": "Connecté avec succès!"
+  },
+  "objects": {
+    "title": "Objets",
+    "create": "Créer un Objet",
+    "description": "Description",
+    "image": "Image",
+    "noObjects": "Aucun objet pour le moment. Créez votre premier!",
+    "view": "Voir",
+    "delete": "Supprimer",
+    "confirm": "Confirmer",
+    "cancel": "Annuler",
+    "deleteSuccess": "Objet supprimé avec succès",
+    "createSuccess": "Objet créé avec succès!"
+  },
+  "language": {
+    "en": "English",
+    "fr": "Français"
+  }
+}

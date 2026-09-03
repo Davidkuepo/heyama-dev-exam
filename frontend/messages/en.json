@@ -1,0 +1,51 @@
+{
+  "nav": {
+    "gallery": "Gallery",
+    "docs": "Docs",
+    "logout": "Logout"
+  },
+  "home": {
+    "title": "Object Gallery",
+    "subtitle": "Create, manage, and showcase your objects with beautiful imagery",
+    "create": "Create Object"
+  },
+  "auth": {
+    "login": "Login",
+    "register": "Register",
+    "signup": "Sign Up",
+    "email": "Email",
+    "password": "Password",
+    "name": "Full Name",
+    "confirmPassword": "Confirm Password",
+    "submit": "Submit",
+    "noAccount": "Don't have an account?",
+    "haveAccount": "Already have an account?",
+    "loginHere": "Login here",
+    "registerHere": "Register here",
+    "invalidEmail": "Invalid email",
+    "passwordTooShort": "Password must be at least 6 characters",
+    "nameTooShort": "Name must be at least 3 characters",
+    "passwordsDoNotMatch": "Passwords do not match",
+    "emailExists": "Email already exists",
+    "invalidCredentials": "Invalid email or password",
+    "registerSuccess": "Account created successfully!",
+    "loginSuccess": "Logged in successfully!"
+  },
+  "objects": {
+    "title": "Objects",
+    "create": "Create Object",
+    "description": "Description",
+    "image": "Image",
+    "noObjects": "No objects yet. Create your first one!",
+    "view": "View",
+    "delete": "Delete",
+    "confirm": "Confirm",
+    "cancel": "Cancel",
+    "deleteSuccess": "Object deleted successfully",
+    "createSuccess": "Object created successfully!"
+  },
+  "language": {
+    "en": "English",
+    "fr": "Français"
+  }
+}
