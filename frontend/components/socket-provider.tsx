@@ -1,43 +1,52 @@
 'use client';
 
-import React, { createContext, useContext, useEffect, ReactNode } from 'react';
-import io, { Socket } from 'socket.io-client';
+import React, { createContext, useContext, useEffect, ReactNode, useState } from 'react';
 
-const SocketContext = createContext<Socket | null>(null);
+const SocketContext = createContext<any>(null);
 
 export function SocketProvider({ children }: { children: ReactNode }) {
-  const [socket, setSocket] = React.useState<Socket | null>(null);
+  const [socket, setSocket] = useState<any>(null);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!mounted) return;
+
     try {
-      const newSocket = io('http://localhost:3000/objects', {
-        reconnection: true,
-        reconnectionDelay: 1000,
-        reconnectionDelayMax: 5000,
-        reconnectionAttempts: 5,
-      });
+      // Lazy load socket.io-client to avoid SSR issues
+      const initSocket = async () => {
+        const { default: io } = await import('socket.io-client');
 
-      newSocket.on('connect', () => {
-        console.log('✅ Connected to WebSocket');
-      });
+        const newSocket = io('http://localhost:3000/objects', {
+          reconnection: true,
+          reconnectionDelay: 1000,
+          reconnectionDelayMax: 5000,
+          reconnectionAttempts: 5,
+        });
 
-      newSocket.on('disconnect', () => {
-        console.log('❌ Disconnected from WebSocket');
-      });
+        newSocket.on('connect', () => {
+          console.log('✅ Connected to WebSocket');
+        });
 
-      newSocket.on('error', (error) => {
-        console.error('WebSocket error:', error);
-      });
+        newSocket.on('disconnect', () => {
+          console.log('❌ Disconnected from WebSocket');
+        });
 
-      setSocket(newSocket);
+        newSocket.on('error', (error: any) => {
+          console.error('WebSocket error:', error);
+        });
 
-      return () => {
-        newSocket.disconnect();
+        setSocket(newSocket);
       };
+
+      initSocket();
     } catch (error) {
       console.error('Failed to initialize WebSocket:', error);
     }
-  }, []);
+  }, [mounted]);
 
   return (
     <SocketContext.Provider value={socket}>{children}</SocketContext.Provider>
