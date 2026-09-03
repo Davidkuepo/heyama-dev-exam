@@ -1,8 +1,5 @@
 'use client';
 
-
-'use client';
-
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
@@ -29,7 +26,8 @@ export default function LoginPage() {
     setError('');
 
     try {
-      const res = await axios.post('http://localhost:3000/auth/login', {
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
+      const res = await axios.post(`${apiUrl}/auth/login`, {
         email,
         password,
       });
