@@ -1,37 +1,43 @@
 import { Injectable, NotFoundException, Inject } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
-import { HeyamaObject, ObjectDocument } from './schemas/object.schema';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Object } from './object.entity';
 import { CreateObjectDto } from './dto/create-object.dto';
 import { WebSocketGateway } from '../websocket/websocket.gateway';
 
 @Injectable()
 export class ObjectsService {
   constructor(
-    @InjectModel(HeyamaObject.name)
-    private objectModel: Model<ObjectDocument>,
+    @InjectRepository(Object) private objectRepository: Repository<Object>,
     @Inject(WebSocketGateway) private wsGateway: WebSocketGateway,
   ) {}
 
-  async create(createObjectDto: CreateObjectDto, file: Express.Multer.File) {
+  async create(
+    createObjectDto: CreateObjectDto,
+    file: Express.Multer.File,
+    userId: string,
+  ) {
     const imageData = `data:${file.mimetype};base64,${file.buffer.toString('base64')}`;
 
-    const createdObject = new this.objectModel({
+    const object = this.objectRepository.create({
       ...createObjectDto,
       imageData,
+      userId,
     });
 
-    const savedObject = await createdObject.save();
+    const savedObject = await this.objectRepository.save(object);
     this.wsGateway.broadcastObjectCreated(savedObject);
     return savedObject;
   }
 
   async findAll() {
-    return this.objectModel.find().sort({ createdAt: -1 }).exec();
+    return this.objectRepository.find({
+      order: { createdAt: 'DESC' },
+    });
   }
 
   async findOne(id: string) {
-    const object = await this.objectModel.findById(id).exec();
+    const object = await this.objectRepository.findOne({ where: { id } });
     if (!object) {
       throw new NotFoundException(`Object with ID ${id} not found`);
     }
@@ -40,7 +46,7 @@ export class ObjectsService {
 
   async remove(id: string) {
     await this.findOne(id);
-    await this.objectModel.findByIdAndDelete(id).exec();
+    await this.objectRepository.delete(id);
     this.wsGateway.broadcastObjectDeleted(id);
     return { message: 'Object deleted successfully', id };
   }

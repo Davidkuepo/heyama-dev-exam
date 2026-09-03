@@ -26,12 +26,14 @@ export class ObjectsController {
   async create(
     @Body() createObjectDto: CreateObjectDto,
     @UploadedFile() file: Express.Multer.File,
+    @Req() req: any,
   ) {
     if (!file) {
       throw new BadRequestException('Image file is required');
     }
 
-    return this.objectsService.create(createObjectDto, file);
+    const userId = req.user.sub;
+    return this.objectsService.create(createObjectDto, file, userId);
   }
 
   @Get()

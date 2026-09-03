@@ -1,17 +1,12 @@
 import { Module } from '@nestjs/common';
-import { MongooseModule } from '@nestjs/mongoose';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { ObjectsController } from './objects.controller';
 import { ObjectsService } from './objects.service';
-import { HeyamaObject, ObjectSchema } from './schemas/object.schema';
+import { Object } from './object.entity';
 import { WebSocketModule } from '../websocket/websocket.module';
 
 @Module({
-  imports: [
-    MongooseModule.forFeature([
-      { name: HeyamaObject.name, schema: ObjectSchema },
-    ]),
-    WebSocketModule,
-  ],
+  imports: [TypeOrmModule.forFeature([Object]), WebSocketModule],
   controllers: [ObjectsController],
   providers: [ObjectsService],
   exports: [ObjectsService],

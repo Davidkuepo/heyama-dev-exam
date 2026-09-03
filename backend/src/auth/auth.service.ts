@@ -1,44 +1,44 @@
 import { Injectable, BadRequestException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
-import { User, UserDocument } from './schemas/user.schema';
+import { User } from '../users/user.entity';
 import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
 
 @Injectable()
 export class AuthService {
   constructor(
-    @InjectModel(User.name) private userModel: Model<UserDocument>,
+    @InjectRepository(User) private userRepository: Repository<User>,
     private jwtService: JwtService,
   ) {}
 
   async register(registerDto: RegisterDto) {
     const { email, password, name } = registerDto;
 
-    const existingUser = await this.userModel.findOne({ email });
+    const existingUser = await this.userRepository.findOne({ where: { email } });
     if (existingUser) {
       throw new BadRequestException('Email already exists');
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const user = new this.userModel({
+    const user = this.userRepository.create({
       email,
       password: hashedPassword,
       name,
     });
 
-    await user.save();
+    await this.userRepository.save(user);
 
     const token = this.jwtService.sign(
-      { sub: user._id, email: user.email },
+      { sub: user.id, email: user.email },
       { expiresIn: '7d' },
     );
 
     return {
-      id: user._id,
+      id: user.id,
       email: user.email,
       name: user.name,
       token,
@@ -48,7 +48,7 @@ export class AuthService {
   async login(loginDto: LoginDto) {
     const { email, password } = loginDto;
 
-    const user = await this.userModel.findOne({ email });
+    const user = await this.userRepository.findOne({ where: { email } });
     if (!user) {
       throw new BadRequestException('Invalid email or password');
     }
@@ -59,12 +59,12 @@ export class AuthService {
     }
 
     const token = this.jwtService.sign(
-      { sub: user._id, email: user.email },
+      { sub: user.id, email: user.email },
       { expiresIn: '7d' },
     );
 
     return {
-      id: user._id,
+      id: user.id,
       email: user.email,
       name: user.name,
       token,
@@ -72,6 +72,11 @@ export class AuthService {
   }
 
   async validateUser(userId: string) {
-    return this.userModel.findById(userId).select('-password');
+    const user = await this.userRepository.findOne({ where: { id: userId } });
+    if (user) {
+      const { password, ...result } = user;
+      return result;
+    }
+    return null;
   }
 }

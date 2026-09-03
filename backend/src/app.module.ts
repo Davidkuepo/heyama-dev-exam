@@ -1,9 +1,11 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { MongooseModule } from '@nestjs/mongoose';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
 import { ObjectsModule } from './objects/objects.module';
 import { WebSocketModule } from './websocket/websocket.module';
+import { User } from './users/user.entity';
+import { Object } from './objects/object.entity';
 
 @Module({
   imports: [
@@ -11,9 +13,17 @@ import { WebSocketModule } from './websocket/websocket.module';
       isGlobal: true,
       envFilePath: '.env',
     }),
-    MongooseModule.forRoot(
-      process.env.MONGODB_URI || 'mongodb://localhost:27017/heyama-dev',
-    ),
+    TypeOrmModule.forRoot({
+      type: 'postgres',
+      host: process.env.DB_HOST || 'localhost',
+      port: parseInt(process.env.DB_PORT || '5432'),
+      username: process.env.DB_USER || 'postgres',
+      password: process.env.DB_PASSWORD || 'postgres',
+      database: process.env.DB_NAME || 'heyama',
+      entities: [User, Object],
+      synchronize: true,
+      logging: false,
+    }),
     AuthModule,
     ObjectsModule,
     WebSocketModule,
