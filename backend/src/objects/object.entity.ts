@@ -12,7 +12,7 @@ export class HeyamaObject {
   @Column({ type: 'text' })
   description: string;
 
-  @Column({ type: 'longtext', nullable: true })
+  @Column({ type: 'text', nullable: true })
   imageData: string;
 
   @CreateDateColumn()
