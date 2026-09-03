@@ -27,8 +27,13 @@ export function ObjectsList({ refreshTrigger, onDeleted }: ObjectsListProps) {
   const { data, isLoading, refetch } = useQuery({
     queryKey: ['objects', refreshTrigger],
     queryFn: async () => {
-      const response = await axios.get('http://localhost:3000/objects');
-      return response.data;
+      try {
+        const response = await axios.get('http://localhost:3000/objects');
+        return response.data;
+      } catch (error) {
+        console.error('Failed to fetch objects:', error);
+        return [];
+      }
     },
   });
 
@@ -39,19 +44,25 @@ export function ObjectsList({ refreshTrigger, onDeleted }: ObjectsListProps) {
   }, [data]);
 
   useEffect(() => {
-    if (!socket) return;
+    if (!socket) {
+      console.warn('Socket not connected yet');
+      return;
+    }
 
-    socket.on('objectCreated', (newObject: Object) => {
+    const handleObjectCreated = (newObject: Object) => {
       setObjects((prev) => [newObject, ...prev]);
-    });
+    };
 
-    socket.on('objectDeleted', ({ id }: { id: string }) => {
+    const handleObjectDeleted = ({ id }: { id: string }) => {
       setObjects((prev) => prev.filter((obj) => obj._id !== id));
-    });
+    };
+
+    socket.on('objectCreated', handleObjectCreated);
+    socket.on('objectDeleted', handleObjectDeleted);
 
     return () => {
-      socket.off('objectCreated');
-      socket.off('objectDeleted');
+      socket.off('objectCreated', handleObjectCreated);
+      socket.off('objectDeleted', handleObjectDeleted);
     };
   }, [socket]);
 

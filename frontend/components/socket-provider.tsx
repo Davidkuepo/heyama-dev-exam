@@ -9,26 +9,34 @@ export function SocketProvider({ children }: { children: ReactNode }) {
   const [socket, setSocket] = React.useState<Socket | null>(null);
 
   useEffect(() => {
-    const newSocket = io('http://localhost:3000/objects', {
-      reconnection: true,
-      reconnectionDelay: 1000,
-      reconnectionDelayMax: 5000,
-      reconnectionAttempts: 5,
-    });
+    try {
+      const newSocket = io('http://localhost:3000/objects', {
+        reconnection: true,
+        reconnectionDelay: 1000,
+        reconnectionDelayMax: 5000,
+        reconnectionAttempts: 5,
+      });
 
-    newSocket.on('connect', () => {
-      console.log('Connected to WebSocket');
-    });
+      newSocket.on('connect', () => {
+        console.log('✅ Connected to WebSocket');
+      });
 
-    newSocket.on('disconnect', () => {
-      console.log('Disconnected from WebSocket');
-    });
+      newSocket.on('disconnect', () => {
+        console.log('❌ Disconnected from WebSocket');
+      });
 
-    setSocket(newSocket);
+      newSocket.on('error', (error) => {
+        console.error('WebSocket error:', error);
+      });
 
-    return () => {
-      newSocket.close();
-    };
+      setSocket(newSocket);
+
+      return () => {
+        newSocket.disconnect();
+      };
+    } catch (error) {
+      console.error('Failed to initialize WebSocket:', error);
+    }
   }, []);
 
   return (
@@ -38,8 +46,5 @@ export function SocketProvider({ children }: { children: ReactNode }) {
 
 export function useSocket() {
   const socket = useContext(SocketContext);
-  if (!socket) {
-    throw new Error('useSocket must be used within SocketProvider');
-  }
   return socket;
 }
