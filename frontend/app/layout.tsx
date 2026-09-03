@@ -1,10 +1,12 @@
+export const dynamic = 'force-dynamic';
+
 import type { Metadata } from 'next';
-import { Providers } from '@/components/providers';
 import './globals.css';
+import { Providers } from '@/components/providers';
 
 export const metadata: Metadata = {
-  title: 'Heyama - Object Manager',
-  description: 'Manage your objects with style',
+  title: 'Heyama',
+  description: 'Object Gallery Application',
 };
 
 export default function RootLayout({
@@ -13,7 +15,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en">
       <body>
         <Providers>{children}</Providers>
       </body>
