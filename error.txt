@@ -1,20 +1,72 @@
+🚨 ERREUR: MongoDB n'est pas installé!
 
+SOLUTION: Installe MongoDB avec l'une de ces commandes:
 
-1 of 1 error
-Next.js (14.2.35) is outdated (learn more)
+═══════════════════════════════════════════════════════════════
 
-Unhandled Runtime Error
-ReferenceError: axios is not defined
+OPTION 1: Installation Directe (Ubuntu/Debian)
+═══════════════════════════════════════════════════════════════
 
-Source
-components/create-object-dialog.tsx (75:23) @ axios
+Copie et exécute ces commandes une par une:
 
-  73 |       }, 1500);
-  74 |     } catch (err) {
-> 75 |       const message = axios.isAxiosError(err)
-     |                       ^
-  76 |         ? err.response?.data?.message || 'Failed to create object'
-  77 |         : 'An error occurred';
-  78 |       setError(message);
-Call Stack
-Show collapsed frames
+sudo apt-get update
+
+sudo apt-get install -y mongodb
+
+sudo systemctl start mongodb
+
+sudo systemctl enable mongodb
+
+Vérifie l'installation:
+mongod --version
+
+Puis lance MongoDB:
+mongod
+
+═══════════════════════════════════════════════════════════════
+
+OPTION 2: Avec Docker (Recommandé - Plus Simple!)
+═══════════════════════════════════════════════════════════════
+
+Si tu as Docker installé, exécute:
+
+cd /home/david/Documents/heyama-dev-exam
+
+./start-docker.sh
+
+Mongo Express sera accessible à: http://localhost:8081
+
+═══════════════════════════════════════════════════════════════
+
+APRÈS L'INSTALLATION:
+
+Ouvre 3 terminaux différents et lance:
+
+Terminal 1:
+mongod
+
+Terminal 2:
+cd /home/david/Documents/heyama-dev-exam/backend
+npm run start:dev
+
+Terminal 3:
+cd /home/david/Documents/heyama-dev-exam/frontend
+npm run dev
+
+Puis ouvre:
+http://localhost:3001
+
+═══════════════════════════════════════════════════════════════
+
+Si Docker:
+
+Terminal 1:
+./start-docker.sh
+
+Terminal 2:
+cd backend && npm run start:dev
+
+Terminal 3:
+cd frontend && npm run dev
+
+═══════════════════════════════════════════════════════════════
