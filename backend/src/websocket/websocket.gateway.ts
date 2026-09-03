@@ -19,11 +19,11 @@ export class WebSocketGateway
   @WebSocketServer()
   server: Server;
 
-  onGatewayConnection(client: Socket) {
+  handleConnection(client: Socket) {
     console.log(`Client connected: ${client.id}`);
   }
 
-  onGatewayDisconnect(client: Socket) {
+  handleDisconnect(client: Socket) {
     console.log(`Client disconnected: ${client.id}`);
   }
 

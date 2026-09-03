@@ -1,72 +1,33 @@
-🚨 ERREUR: MongoDB n'est pas installé!
+[11:16:18] Starting compilation in watch mode...
 
-SOLUTION: Installe MongoDB avec l'une de ces commandes:
+src/auth/auth.service.ts:5:25 - error TS2307: Cannot find module 'bcrypt' or its corresponding type declarations.
 
-═══════════════════════════════════════════════════════════════
+5 import * as bcrypt from 'bcrypt';
+                          ~~~~~~~~
 
-OPTION 1: Installation Directe (Ubuntu/Debian)
-═══════════════════════════════════════════════════════════════
+src/websocket/websocket.gateway.ts:16:14 - error TS2420: Class 'WebSocketGateway' incorrectly implements interface 'OnGatewayConnection<any>'.
+  Property 'handleConnection' is missing in type 'WebSocketGateway' but required in type 'OnGatewayConnection<any>'.
 
-Copie et exécute ces commandes une par une:
+16 export class WebSocketGateway
+                ~~~~~~~~~~~~~~~~
 
-sudo apt-get update
+  node_modules/@nestjs/websockets/interfaces/hooks/on-gateway-connection.interface.d.ts:5:5
+    5     handleConnection(client: T, ...args: any[]): any;
+          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    'handleConnection' is declared here.
 
-sudo apt-get install -y mongodb
+src/websocket/websocket.gateway.ts:16:14 - error TS2420: Class 'WebSocketGateway' incorrectly implements interface 'OnGatewayDisconnect<any>'.
+  Property 'handleDisconnect' is missing in type 'WebSocketGateway' but required in type 'OnGatewayDisconnect<any>'.
 
-sudo systemctl start mongodb
+16 export class WebSocketGateway
+                ~~~~~~~~~~~~~~~~
 
-sudo systemctl enable mongodb
+  node_modules/@nestjs/websockets/interfaces/hooks/on-gateway-disconnect.interface.d.ts:5:5
+    5     handleDisconnect(client: T): any;
+          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    'handleDisconnect' is declared here.
 
-Vérifie l'installation:
-mongod --version
+[11:16:34] Found 3 errors. Watching for file changes.
 
-Puis lance MongoDB:
-mongod
 
-═══════════════════════════════════════════════════════════════
 
-OPTION 2: Avec Docker (Recommandé - Plus Simple!)
-═══════════════════════════════════════════════════════════════
-
-Si tu as Docker installé, exécute:
-
-cd /home/david/Documents/heyama-dev-exam
-
-./start-docker.sh
-
-Mongo Express sera accessible à: http://localhost:8081
-
-═══════════════════════════════════════════════════════════════
-
-APRÈS L'INSTALLATION:
-
-Ouvre 3 terminaux différents et lance:
-
-Terminal 1:
-mongod
-
-Terminal 2:
-cd /home/david/Documents/heyama-dev-exam/backend
-npm run start:dev
-
-Terminal 3:
-cd /home/david/Documents/heyama-dev-exam/frontend
-npm run dev
-
-Puis ouvre:
-http://localhost:3001
-
-═══════════════════════════════════════════════════════════════
-
-Si Docker:
-
-Terminal 1:
-./start-docker.sh
-
-Terminal 2:
-cd backend && npm run start:dev
-
-Terminal 3:
-cd frontend && npm run dev
-
-═══════════════════════════════════════════════════════════════
