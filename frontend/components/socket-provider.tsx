@@ -19,8 +19,9 @@ export function SocketProvider({ children }: { children: ReactNode }) {
       // Lazy load socket.io-client to avoid SSR issues
       const initSocket = async () => {
         const { default: io } = await import('socket.io-client');
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
 
-        const newSocket = io('http://localhost:3000/objects', {
+        const newSocket = io(`${apiUrl}/objects`, {
           reconnection: true,
           reconnectionDelay: 1000,
           reconnectionDelayMax: 5000,

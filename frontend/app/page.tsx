@@ -1,8 +1,5 @@
 'use client';
 
-
-'use client';
-
 import { useState } from 'react';
 import { Sparkles, Clock, Type } from 'lucide-react';
 import { ObjectsList } from '@/components/objects-list';
