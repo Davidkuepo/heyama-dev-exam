@@ -30,11 +30,22 @@ async function connectAndShow() {
       console.log('\n👥 Users:');
       const users = await db.collection('users').find({}).toArray();
       users.forEach(user => {
-        console.log(`  - ${user.email} (ID: ${user._id})`);
+        console.log(`  - ${user.email} (${user.name}) - ID: ${user._id}`);
       });
     }
 
-    console.log('\n💾 Done! Close with Ctrl+C');
+    // Show objects if exists
+    if (collections.some(c => c.name === 'heyamaobjects')) {
+      console.log('\n📦 Objects:');
+      const objects = await db.collection('heyamaobjects').find({}).limit(5).toArray();
+      objects.forEach(obj => {
+        console.log(`  - ${obj.title} (ID: ${obj._id})`);
+      });
+    }
+
+    console.log('\n✅ Done!\n');
+    await mongoose.connection.close();
+    process.exit(0);
 
   } catch (error) {
     console.error('❌ Connection failed:', error.message);
