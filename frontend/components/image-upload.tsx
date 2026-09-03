@@ -3,6 +3,7 @@
 import { useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { Upload, Image as ImageIcon, X } from 'lucide-react';
+import { useI18n } from './i18n-context';
 
 interface ImageUploadProps {
   onChange: (file: File) => void;
@@ -10,6 +11,7 @@ interface ImageUploadProps {
 }
 
 export function ImageUpload({ onChange, preview }: ImageUploadProps) {
+  const { t } = useI18n();
   const onDrop = useCallback(
     (acceptedFiles: File[]) => {
       if (acceptedFiles.length > 0) {
@@ -31,7 +33,7 @@ export function ImageUpload({ onChange, preview }: ImageUploadProps) {
 
   return (
     <div className="space-y-2">
-      <label className="text-sm font-medium">Image</label>
+      <label className="text-sm font-medium">{t('objects.image')}</label>
 
       {previewUrl ? (
         <div className="relative group">
@@ -66,12 +68,10 @@ export function ImageUpload({ onChange, preview }: ImageUploadProps) {
             )}
             <div>
               <p className="font-medium text-gray-900 dark:text-white">
-                {isDragActive
-                  ? 'Drop your image here'
-                  : 'Drag & drop your image here'}
+                {t('imageUpload.dragAndDrop')}
               </p>
               <p className="text-sm text-gray-500 dark:text-gray-400">
-                or click to browse
+                {t('imageUpload.selectImage')}
               </p>
             </div>
           </div>

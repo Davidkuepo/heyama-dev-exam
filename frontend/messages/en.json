@@ -1,8 +1,12 @@
 {
   "nav": {
     "gallery": "Gallery",
-    "docs": "Docs",
-    "logout": "Logout"
+    "docs": "Documentation",
+    "about": "About",
+    "profile": "Profile",
+    "settings": "Settings",
+    "logout": "Logout",
+    "search": "Search objects..."
   },
   "home": {
     "title": "Object Gallery",
@@ -29,23 +33,101 @@
     "emailExists": "Email already exists",
     "invalidCredentials": "Invalid email or password",
     "registerSuccess": "Account created successfully!",
-    "loginSuccess": "Logged in successfully!"
+    "loginSuccess": "Logged in successfully!",
+    "signInTitle": "Sign in to your account",
+    "emailPlaceholder": "you@example.com",
+    "signingIn": "Signing in...",
+    "signIn": "Sign In",
+    "createAccount": "Create your account",
+    "namePlaceholder": "John Doe",
+    "creatingAccount": "Creating account...",
+    "creatingSuccess": "Account created successfully!"
   },
   "objects": {
     "title": "Objects",
     "create": "Create Object",
     "description": "Description",
     "image": "Image",
-    "noObjects": "No objects yet. Create your first one!",
+    "noObjects": "No objects yet",
+    "noResults": "No results found",
     "view": "View",
     "delete": "Delete",
     "confirm": "Confirm",
     "cancel": "Cancel",
     "deleteSuccess": "Object deleted successfully",
-    "createSuccess": "Object created successfully!"
+    "createSuccess": "Object created successfully!",
+    "created": "Created",
+    "id": "ID",
+    "deleting": "Deleting...",
+    "deleteDetailConfirm": "Are you sure you want to delete this object? This action cannot be undone and you will be redirected to the gallery.",
+    "sort": {
+      "latest": "Latest",
+      "oldest": "Oldest",
+      "az": "A-Z"
+    }
+  },
+  "profile": {
+    "title": "Profile",
+    "name": "Name",
+    "email": "Email",
+    "userId": "User ID"
+  },
+  "settings": {
+    "title": "Settings",
+    "comingSoon": "More settings coming soon! 🚀",
+    "preferences": "Preferences",
+    "themePreferences": "Theme preferences",
+    "notificationSettings": "Notification settings",
+    "privacyControls": "Privacy controls"
+  },
+  "common": {
+    "view": "View",
+    "delete": "Delete",
+    "create": "Create",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "loading": "Loading...",
+    "noResults": "No results found",
+    "save": "Save",
+    "edit": "Edit",
+    "back": "Back",
+    "at": "at"
+  },
+  "errors": {
+    "somethingWentWrong": "Something went wrong",
+    "deleteConfirm": "Are you sure you want to delete this object? This action cannot be undone.",
+    "deleteTitle": "Delete Object"
+  },
+  "dialog": {
+    "createObject": "Create Object",
+    "uploadImage": "Upload Image",
+    "dragAndDrop": "Drag and drop your image here or click to browse",
+    "title": "Title",
+    "titlePlaceholder": "Enter object title",
+    "titleError": "Title must be at least 3 characters",
+    "description": "Description",
+    "descriptionPlaceholder": "Enter detailed description",
+    "descriptionError": "Description must be at least 10 characters",
+    "selectImage": "Please select an image",
+    "create": "Create",
+    "creating": "Creating...",
+    "created": "Created!"
   },
   "language": {
     "en": "English",
     "fr": "Français"
+  },
+  "imageUpload": {
+    "dragAndDrop": "Drag and drop your image here or click to browse",
+    "selectImage": "Select Image"
+  },
+  "footer": {
+    "quickLinks": "Quick Links",
+    "support": "Support",
+    "info": "Info",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Service",
+    "contact": "Contact",
+    "copyright": "© 2026 Heyama. All rights reserved."
   }
 }

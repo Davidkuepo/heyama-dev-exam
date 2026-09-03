@@ -1,8 +1,12 @@
 {
   "nav": {
     "gallery": "Galerie",
-    "docs": "Docs",
-    "logout": "Déconnexion"
+    "docs": "Documentation",
+    "about": "À propos",
+    "profile": "Profil",
+    "settings": "Paramètres",
+    "logout": "Déconnexion",
+    "search": "Rechercher des objets..."
   },
   "home": {
     "title": "Galerie d'Objets",
@@ -29,23 +33,101 @@
     "emailExists": "L'email existe déjà",
     "invalidCredentials": "Email ou mot de passe invalide",
     "registerSuccess": "Compte créé avec succès!",
-    "loginSuccess": "Connecté avec succès!"
+    "loginSuccess": "Connecté avec succès!",
+    "signInTitle": "Connectez-vous à votre compte",
+    "emailPlaceholder": "vous@exemple.com",
+    "signingIn": "Connexion en cours...",
+    "signIn": "Se Connecter",
+    "createAccount": "Créez votre compte",
+    "namePlaceholder": "Jean Dupont",
+    "creatingAccount": "Création du compte...",
+    "creatingSuccess": "Compte créé avec succès!"
   },
   "objects": {
     "title": "Objets",
     "create": "Créer un Objet",
     "description": "Description",
     "image": "Image",
-    "noObjects": "Aucun objet pour le moment. Créez votre premier!",
+    "noObjects": "Aucun objet pour le moment",
+    "noResults": "Aucun résultat trouvé",
     "view": "Voir",
     "delete": "Supprimer",
     "confirm": "Confirmer",
     "cancel": "Annuler",
     "deleteSuccess": "Objet supprimé avec succès",
-    "createSuccess": "Objet créé avec succès!"
+    "createSuccess": "Objet créé avec succès!",
+    "created": "Créé",
+    "id": "ID",
+    "deleting": "Suppression...",
+    "deleteDetailConfirm": "Êtes-vous sûr de vouloir supprimer cet objet ? Cette action ne peut pas être annulée et vous serez redirigé vers la galerie.",
+    "sort": {
+      "latest": "Récent",
+      "oldest": "Ancien",
+      "az": "A-Z"
+    }
+  },
+  "profile": {
+    "title": "Profil",
+    "name": "Nom",
+    "email": "Email",
+    "userId": "ID Utilisateur"
+  },
+  "settings": {
+    "title": "Paramètres",
+    "comingSoon": "D'autres paramètres arrivent bientôt! 🚀",
+    "preferences": "Préférences",
+    "themePreferences": "Préférences de thème",
+    "notificationSettings": "Paramètres de notification",
+    "privacyControls": "Contrôles de confidentialité"
+  },
+  "common": {
+    "view": "Voir",
+    "delete": "Supprimer",
+    "create": "Créer",
+    "cancel": "Annuler",
+    "confirm": "Confirmer",
+    "loading": "Chargement...",
+    "noResults": "Aucun résultat trouvé",
+    "save": "Enregistrer",
+    "edit": "Modifier",
+    "back": "Retour",
+    "at": "à"
+  },
+  "errors": {
+    "somethingWentWrong": "Quelque chose s'est mal passé",
+    "deleteConfirm": "Êtes-vous sûr de vouloir supprimer cet objet? Cette action ne peut pas être annulée.",
+    "deleteTitle": "Supprimer l'objet"
+  },
+  "dialog": {
+    "createObject": "Créer un Objet",
+    "uploadImage": "Télécharger une Image",
+    "dragAndDrop": "Glissez-déposez votre image ici ou cliquez pour parcourir",
+    "title": "Titre",
+    "titlePlaceholder": "Entrez le titre de l'objet",
+    "titleError": "Le titre doit contenir au moins 3 caractères",
+    "description": "Description",
+    "descriptionPlaceholder": "Entrez une description détaillée",
+    "descriptionError": "La description doit contenir au moins 10 caractères",
+    "selectImage": "Veuillez sélectionner une image",
+    "create": "Créer",
+    "creating": "Création...",
+    "created": "Créé!"
   },
   "language": {
     "en": "English",
     "fr": "Français"
+  },
+  "imageUpload": {
+    "dragAndDrop": "Glissez-déposez votre image ici ou cliquez pour parcourir",
+    "selectImage": "Sélectionner une Image"
+  },
+  "footer": {
+    "quickLinks": "Liens Rapides",
+    "support": "Support",
+    "info": "Infos",
+    "privacy": "Politique de Confidentialité",
+    "terms": "Conditions d'Utilisation",
+    "contact": "Contact",
+    "copyright": "© 2026 Heyama. Tous droits réservés."
   }
 }

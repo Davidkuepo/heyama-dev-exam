@@ -3,7 +3,6 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { HeyamaObject, ObjectDocument } from './schemas/object.schema';
 import { CreateObjectDto } from './dto/create-object.dto';
-import { S3Service } from '../s3/s3.service';
 import { WebSocketGateway } from '../websocket/websocket.gateway';
 
 @Injectable()
@@ -11,16 +10,15 @@ export class ObjectsService {
   constructor(
     @InjectModel(HeyamaObject.name)
     private objectModel: Model<ObjectDocument>,
-    private s3Service: S3Service,
     @Inject(WebSocketGateway) private wsGateway: WebSocketGateway,
   ) {}
 
   async create(createObjectDto: CreateObjectDto, file: Express.Multer.File) {
-    const imageUrl = await this.s3Service.uploadFile(file);
+    const imageData = `data:${file.mimetype};base64,${file.buffer.toString('base64')}`;
 
     const createdObject = new this.objectModel({
       ...createObjectDto,
-      imageUrl,
+      imageData,
     });
 
     const savedObject = await createdObject.save();
@@ -41,8 +39,7 @@ export class ObjectsService {
   }
 
   async remove(id: string) {
-    const object = await this.findOne(id);
-    await this.s3Service.deleteFile(object.imageUrl);
+    await this.findOne(id);
     await this.objectModel.findByIdAndDelete(id).exec();
     this.wsGateway.broadcastObjectDeleted(id);
     return { message: 'Object deleted successfully', id };

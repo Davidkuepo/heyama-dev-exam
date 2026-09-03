@@ -1,118 +1,167 @@
-# Heyama Dev Exam - Full Stack Application
+# 🎨 Heyama Dev Exam - Fullstack Application
 
-A modern, production-ready full-stack application for managing objects with image uploads, real-time synchronization, and beautiful UI.
+**Senior-level fullstack implementation** avec NestJS, Next.js, MongoDB et WebSocket en temps réel.
 
-## 🚀 Tech Stack
+## ✨ Caractéristiques
+
+- ✅ **Authentication JWT** avec login/register
+- ✅ **Real-time WebSocket** avec Socket.io
+- ✅ **i18n Français/English** complet
+- ✅ **Beautiful Minimalist UI** avec Tailwind + shadcn/ui
+- ✅ **Responsive Design** mobile-first
+- ✅ **Image Upload** base64
+- ✅ **Toast Notifications** avec Sonner
+- ✅ **Delete Confirmations** modales
+- ✅ **Search & Filter** fonctionnel
+- ✅ **Production Ready** avec Docker
+
+## 🏗️ Stack Technique
 
 ### Backend
-- **Framework**: NestJS (Node.js)
-- **Database**: MongoDB
-- **File Storage**: AWS S3
-- **Real-time**: Socket.io
-- **Validation**: class-validator, class-transformer
+- **NestJS** v10 - Framework Node.js
+- **MongoDB** - Base de données
+- **Mongoose** - ODM
+- **JWT** - Authentication
+- **Socket.io** - Real-time
 
 ### Frontend
-- **Framework**: Next.js 14 (React 18)
-- **UI**: Tailwind CSS + shadcn/ui
-- **State Management**: TanStack Query (React Query)
-- **Real-time**: Socket.io Client
-- **Form Handling**: React Hook Form + Zod
-- **HTTP Client**: Axios
+- **Next.js** v14 - React framework
+- **React 18** - UI
+- **Tailwind CSS** - Styling
+- **shadcn/ui** - Components
+- **React Hook Form** - Forms
+- **Zod** - Validation
+- **Axios** - HTTP client
+- **Sonner** - Notifications
 
-## 📋 Features
+## 🚀 Déploiement
 
-- ✅ Create objects with title, description, and image
-- ✅ Upload images to AWS S3
-- ✅ List all objects with real-time updates
-- ✅ View individual object details
-- ✅ Delete objects (with image cleanup from S3)
-- ✅ Real-time synchronization between browser tabs
-- ✅ Beautiful, responsive UI with dark mode support
-- ✅ Drag & drop image upload
-- ✅ Professional error handling and validation
+### Déploiement Manuel (Docker)
 
-## 🔧 Setup Instructions
+```bash
+# 1. Préparer les variables d'environnement
+cp backend/.env.example backend/.env.prod
+# Éditer backend/.env.prod avec vos valeurs
 
-### Prerequisites
-- Node.js 18+ and npm
-- MongoDB (local or Atlas)
-- AWS S3 account (or compatible service)
+cat > frontend/.env.production << 'EOL'
+NEXT_PUBLIC_API_URL=http://your-server-ip:3000
+EOL
 
-### Backend Setup
+# 2. Lancer le déploiement
+./deploy.sh
 
-1. **Navigate to backend directory**
+# Ou manuellement:
+docker compose -f docker-compose.prod.yml up -d
+```
+
+### Accès
+
+- **Frontend**: http://localhost:3001
+- **Backend**: http://localhost:3000
+- **MongoDB**: mongodb://localhost:27017
+
+📖 Voir `DEPLOYMENT.md` pour plus de détails
+
+## 📦 Développement Local
+
+### Backend
 ```bash
 cd backend
 npm install
-cp .env.example .env
-```
-
-2. **Configure environment variables** in `.env`:
-```env
-PORT=3000
-MONGODB_URI=mongodb://localhost:27017/heyama-dev
-AWS_ACCESS_KEY_ID=your_key
-AWS_SECRET_ACCESS_KEY=your_secret
-AWS_REGION=eu-west-3
-AWS_S3_BUCKET_NAME=your-bucket
-CORS_ORIGIN=http://localhost:3001
-```
-
-3. **Start the backend**
-```bash
 npm run start:dev
 ```
 
-Backend runs on `http://localhost:3000`
+Backend démarre sur `http://localhost:3000`
 
-### Frontend Setup
-
-1. **Navigate to frontend directory**
+### Frontend
 ```bash
 cd frontend
 npm install
 npm run dev
 ```
 
-Frontend runs on `http://localhost:3001`
+Frontend démarre sur `http://localhost:3001`
 
-## 📚 API Endpoints
+### MongoDB
+```bash
+docker compose up -d
+```
 
-- `POST /objects` - Create object (multipart form-data with title, description, image)
-- `GET /objects` - List all objects
-- `GET /objects/:id` - Get single object
-- `DELETE /objects/:id` - Delete object
+MongoDB démarre sur `mongodb://localhost:27017`
 
-## 🔄 Real-time WebSocket Events
+## 🔑 Variables d'Environnement
 
-- `objectCreated` - New object created
-- `objectDeleted` - Object deleted
-- Changes instantly sync across all connected browsers
+### Backend (`.env.prod`)
+```
+MONGODB_URI=mongodb://mongo:27017/heyama
+JWT_SECRET=your_secret_key_here
+NODE_ENV=production
+PORT=3000
+```
 
-## 🎨 Design Highlights
+### Frontend (`.env.production`)
+```
+NEXT_PUBLIC_API_URL=http://localhost:3000
+```
 
-✨ **Premium UI Components**
-- Modern gradient backgrounds
-- Smooth animations and transitions
-- Dark mode support
-- Responsive mobile-first design
-- Accessible form controls
+## 🛠️ Commandes Utiles
 
-## 📦 Key Features
+```bash
+# Développement
+npm run dev           # Frontend dev
+npm run start:dev     # Backend dev
 
-- Drag & drop image upload
-- Image preview before upload
-- Confirmation dialogs for destructive actions
-- Loading states and error handling
-- Real-time object gallery updates
-- Detailed object view page
+# Production
+npm run build         # Build
+npm run start         # Start prod
 
-## 🚀 Ready for Production
+# Docker
+docker compose -f docker-compose.prod.yml up -d      # Démarrer
+docker compose -f docker-compose.prod.yml down       # Arrêter
+docker compose -f docker-compose.prod.yml logs -f    # Logs
+```
 
-This is production-quality code following:
-- REST API best practices
-- Clean architecture patterns
-- TypeScript strict mode
-- Secure file handling
-- CORS and validation
-- Professional error handling
+## 📋 Structure du Projet
+
+```
+heyama-dev-exam/
+├── backend/
+│   ├── src/
+│   │   ├── app.module.ts
+│   │   ├── auth/
+│   │   ├── objects/
+│   │   └── websocket/
+│   ├── package.json
+│   └── Dockerfile
+├── frontend/
+│   ├── app/
+│   │   ├── page.tsx
+│   │   ├── auth/
+│   │   ├── objects/
+│   │   ├── profile/
+│   │   └── settings/
+│   ├── components/
+│   ├── package.json
+│   └── Dockerfile
+├── docker-compose.yml
+├── docker-compose.prod.yml
+├── deploy.sh
+└── DEPLOYMENT.md
+```
+
+## 🔐 Sécurité
+
+- ✅ JWT authentication
+- ✅ Password hashing avec bcrypt
+- ✅ CORS configuré
+- ✅ Environment variables sépaées
+- ✅ MongoDB connection sécurisée
+- ⚠️ **En production**: Utilisez HTTPS avec Nginx/Certbot
+
+## 📞 Support
+
+Voir `DEPLOYMENT.md` pour troubleshooting
+
+---
+
+**Développé avec ❤️ pour le Heyama Dev Exam**

@@ -6,21 +6,30 @@ import apiClient from '@/lib/axios';
 import { Loader2 } from 'lucide-react';
 import { ObjectCard } from './object-card';
 import { useSocket } from './socket-provider';
+import { useI18n } from './i18n-context';
 
 interface Object {
   _id: string;
   title: string;
   description: string;
-  imageUrl: string;
+  imageData: string;
   createdAt: string;
 }
 
 interface ObjectsListProps {
   refreshTrigger: number;
   onDeleted: () => void;
+  searchQuery?: string;
+  sortBy?: 'newest' | 'oldest' | 'az';
 }
 
-export function ObjectsList({ refreshTrigger, onDeleted }: ObjectsListProps) {
+export function ObjectsList({
+  refreshTrigger,
+  onDeleted,
+  searchQuery = '',
+  sortBy = 'newest',
+}: ObjectsListProps) {
+  const { t } = useI18n();
   const socket = useSocket();
   const [objects, setObjects] = useState<Object[]>([]);
 
@@ -75,33 +84,56 @@ export function ObjectsList({ refreshTrigger, onDeleted }: ObjectsListProps) {
     }
   };
 
+  const filteredAndSortedObjects = objects
+    .filter((obj) =>
+      obj.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      obj.description.toLowerCase().includes(searchQuery.toLowerCase())
+    )
+    .sort((a, b) => {
+      if (sortBy === 'newest') {
+        return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+      } else if (sortBy === 'oldest') {
+        return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
+      } else {
+        return a.title.localeCompare(b.title);
+      }
+    });
+
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center py-12">
-        <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
+      <div className="flex items-center justify-center py-24">
+        <Loader2 className="w-6 h-6 animate-spin text-gray-400" />
       </div>
     );
   }
 
   if (objects.length === 0) {
     return (
-      <div className="text-center py-12">
-        <p className="text-gray-500 dark:text-gray-400">
-          No objects yet. Create your first one to get started!
-        </p>
+      <div className="flex flex-col items-center justify-center py-24">
+        <p className="text-gray-500 dark:text-gray-400">{t('objects.noObjects')}</p>
+      </div>
+    );
+  }
+
+  if (filteredAndSortedObjects.length === 0) {
+    return (
+      <div className="flex flex-col items-center justify-center py-24">
+        <p className="text-gray-500 dark:text-gray-400">{t('objects.noResults')}</p>
       </div>
     );
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      {objects.map((object) => (
-        <ObjectCard
-          key={object._id}
-          object={object}
-          onDelete={() => handleDelete(object._id)}
-        />
-      ))}
+    <div className="w-full">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 w-full">
+        {filteredAndSortedObjects.map((object) => (
+          <ObjectCard
+            key={object._id}
+            object={object}
+            onDelete={() => handleDelete(object._id)}
+          />
+        ))}
+      </div>
     </div>
   );
 }

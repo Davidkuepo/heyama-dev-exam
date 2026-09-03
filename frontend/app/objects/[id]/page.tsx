@@ -3,24 +3,32 @@
 import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import apiClient from '@/lib/axios';
-import { ArrowLeft, Loader2, AlertCircle } from 'lucide-react';
+import { toast } from 'sonner';
+import { ArrowLeft, Loader2, AlertCircle, Trash2, Calendar } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { PrivateRoute } from '@/components/private-route';
+import { Header } from '@/components/header';
+import { Footer } from '@/components/footer';
+import { ConfirmDialog } from '@/components/confirm-dialog';
+import { useI18n } from '@/components/i18n-context';
 
 interface Object {
   _id: string;
   title: string;
   description: string;
-  imageUrl: string;
+  imageData: string;
   createdAt: string;
 }
 
 export default function ObjectDetailPage() {
+  const { t } = useI18n();
   const params = useParams();
   const router = useRouter();
   const [object, setObject] = useState<Object | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
   useEffect(() => {
     const fetchObject = async () => {
@@ -28,7 +36,7 @@ export default function ObjectDetailPage() {
         const response = await apiClient.get(`/objects/${params.id}`);
         setObject(response.data);
       } catch (err) {
-        setError('Failed to load object');
+        setError(t('errors.somethingWentWrong'));
         console.error(err);
       } finally {
         setIsLoading(false);
@@ -38,7 +46,21 @@ export default function ObjectDetailPage() {
     if (params.id) {
       fetchObject();
     }
-  }, [params.id]);
+  }, [params.id, t]);
+
+  const handleDelete = async () => {
+    setIsDeleting(true);
+    try {
+      await apiClient.delete(`/objects/${params.id}`);
+      toast.success(t('objects.deleteSuccess'));
+      router.push('/');
+    } catch (err) {
+      toast.error(t('errors.somethingWentWrong'));
+    } finally {
+      setIsDeleting(false);
+      setShowDeleteConfirm(false);
+    }
+  };
 
   if (isLoading) {
     return (
@@ -53,94 +75,130 @@ export default function ObjectDetailPage() {
       <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-950 dark:to-slate-900 flex items-center justify-center">
         <div className="text-center space-y-4">
           <AlertCircle className="w-12 h-12 text-red-500 mx-auto" />
-          <p className="text-gray-600 dark:text-gray-400">{error || 'Object not found'}</p>
-          <Button onClick={() => router.push('/')}>Go Back</Button>
+          <p className="text-gray-600 dark:text-gray-400">{error || t('objects.noObjects')}</p>
+          <Button onClick={() => router.push('/')}>{t('common.back')}</Button>
         </div>
       </div>
     );
   }
 
-  const formattedDate = new Date(object.createdAt).toLocaleDateString('en-US', {
+  const locale = typeof window !== 'undefined' ? localStorage.getItem('language') || 'en' : 'en';
+  const formattedDate = new Date(object.createdAt).toLocaleDateString(locale === 'fr' ? 'fr-FR' : 'en-US', {
     year: 'numeric',
     month: 'long',
     day: 'numeric',
+  });
+
+  const formattedTime = new Date(object.createdAt).toLocaleTimeString(locale === 'fr' ? 'fr-FR' : 'en-US', {
     hour: '2-digit',
     minute: '2-digit',
   });
 
   return (
     <PrivateRoute>
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-950 dark:to-slate-900">
-        <div className="container mx-auto px-4 py-8">
-        <Button
-          onClick={() => router.push('/')}
-          variant="ghost"
-          className="gap-2 mb-8"
-        >
-          <ArrowLeft className="w-4 h-4" />
-          Back
-        </Button>
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-950 dark:to-slate-900 flex flex-col">
+        <Header />
 
-        <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-          {/* Image */}
-          <div className="flex items-center">
-            <div className="w-full rounded-xl overflow-hidden shadow-2xl">
-              <img
-                src={object.imageUrl}
-                alt={object.title}
-                className="w-full h-auto"
-                onError={(e) => {
-                  (e.target as HTMLImageElement).src =
-                    'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect fill=%22%23ddd%22 width=%22400%22 height=%22300%22/%3E%3C/svg%3E';
-                }}
-              />
-            </div>
-          </div>
+        <main className="flex-1 container mx-auto px-4 max-w-5xl py-8">
+          {/* Back Button */}
+          <Button
+            onClick={() => router.push('/')}
+            variant="ghost"
+            className="gap-2 mb-8"
+          >
+            <ArrowLeft className="w-4 h-4" />
+            {t('common.back')}
+          </Button>
 
-          {/* Content */}
-          <div className="space-y-6 flex flex-col justify-center">
-            <div>
-              <h1 className="text-4xl font-bold text-slate-900 dark:text-white mb-2">
-                {object.title}
-              </h1>
-              <p className="text-sm text-gray-500 dark:text-gray-400">
-                Created on {formattedDate}
-              </p>
-            </div>
-
-            <div className="bg-white dark:bg-slate-900 rounded-xl p-6 border border-gray-200 dark:border-gray-800">
-              <h2 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
-                Description
-              </h2>
-              <p className="text-gray-600 dark:text-gray-400 leading-relaxed text-lg">
-                {object.description}
-              </p>
-            </div>
-
-            <div className="grid grid-cols-2 gap-4 text-sm">
-              <div className="bg-blue-50 dark:bg-blue-950 rounded-lg p-4 border border-blue-200 dark:border-blue-800">
-                <p className="text-blue-600 dark:text-blue-400 font-medium">Object ID</p>
-                <p className="text-xs text-blue-500 dark:text-blue-300 font-mono break-all">
-                  {object._id}
-                </p>
-              </div>
-              <div className="bg-purple-50 dark:bg-purple-950 rounded-lg p-4 border border-purple-200 dark:border-purple-800">
-                <p className="text-purple-600 dark:text-purple-400 font-medium">
-                  Image URL
-                </p>
-                <a
-                  href={object.imageUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-xs text-purple-500 dark:text-purple-300 hover:underline truncate"
-                >
-                  View in S3
-                </a>
+          {/* Main Content */}
+          <div className="grid lg:grid-cols-3 gap-8 mb-8">
+            {/* Image Section */}
+            <div className="lg:col-span-2">
+              <div className="rounded-2xl overflow-hidden shadow-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-slate-900">
+                <div className="aspect-square overflow-hidden bg-gray-100 dark:bg-slate-800">
+                  <img
+                    src={object.imageData}
+                    alt={object.title}
+                    className="w-full h-full object-cover"
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).src =
+                        'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22400%22%3E%3Crect fill=%22%23ddd%22 width=%22400%22 height=%22400%22/%3E%3C/svg%3E';
+                    }}
+                  />
+                </div>
               </div>
             </div>
+
+            {/* Details Section */}
+            <div className="space-y-6">
+              {/* Title and Description */}
+              <div className="bg-white dark:bg-slate-900 rounded-2xl p-6 border border-gray-200 dark:border-gray-800 shadow-sm">
+                <h1 className="text-3xl font-bold text-slate-900 dark:text-white mb-4 line-clamp-2">
+                  {object.title}
+                </h1>
+                <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
+                  {object.description}
+                </p>
+              </div>
+
+              {/* Metadata */}
+              <div className="bg-blue-50 dark:bg-blue-950/30 rounded-2xl p-6 border border-blue-200 dark:border-blue-900 shadow-sm">
+                <div className="space-y-4">
+                  <div className="flex items-start gap-3">
+                    <Calendar className="w-5 h-5 text-blue-600 dark:text-blue-400 flex-shrink-0 mt-0.5" />
+                    <div>
+                      <p className="text-sm font-medium text-blue-900 dark:text-blue-300">
+                        {t('objects.created')}
+                      </p>
+                      <p className="text-sm text-blue-700 dark:text-blue-400">
+                        {formattedDate} {t('common.at')} {formattedTime}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="border-t border-blue-200 dark:border-blue-900 pt-4">
+                    <p className="text-xs font-mono text-blue-600 dark:text-blue-400 break-all">
+                      {t('objects.id')}: {object._id}
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Delete Button */}
+              <Button
+                onClick={() => setShowDeleteConfirm(true)}
+                disabled={isDeleting}
+                variant="destructive"
+                className="w-full gap-2 h-11"
+              >
+                {isDeleting ? (
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                    {t('objects.deleting')}
+                  </>
+                ) : (
+                  <>
+                    <Trash2 className="w-4 h-4" />
+                    {t('objects.delete')}
+                  </>
+                )}
+              </Button>
+            </div>
           </div>
-        </div>
-      </div>
+        </main>
+
+        <Footer />
+
+        <ConfirmDialog
+          open={showDeleteConfirm}
+          title={t('errors.deleteTitle')}
+          description={t('objects.deleteDetailConfirm')}
+          confirmText={t('objects.delete')}
+          cancelText={t('common.cancel')}
+          variant="destructive"
+          isLoading={isDeleting}
+          onConfirm={handleDelete}
+          onCancel={() => setShowDeleteConfirm(false)}
+        />
       </div>
     </PrivateRoute>
   );

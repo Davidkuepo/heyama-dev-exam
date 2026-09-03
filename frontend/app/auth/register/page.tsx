@@ -3,13 +3,18 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
+import { toast } from 'sonner';
 import { AlertCircle, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import Link from 'next/link';
+import { useAuth } from '@/components/auth-context';
+import { useI18n } from '@/components/i18n-context';
 
 export default function RegisterPage() {
+  const { t } = useI18n();
   const router = useRouter();
+  const { setAuthData } = useAuth();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -31,7 +36,7 @@ export default function RegisterPage() {
     setError('');
 
     if (formData.password !== formData.confirmPassword) {
-      setError('Passwords do not match');
+      setError(t('auth.passwordsDoNotMatch'));
       return;
     }
 
@@ -46,14 +51,15 @@ export default function RegisterPage() {
 
       localStorage.setItem('token', res.data.token);
       localStorage.setItem('user', JSON.stringify(res.data));
-
+      setAuthData(res.data.token, res.data);
+      toast.success(t('auth.registerSuccess'));
       router.push('/');
     } catch (err) {
-      setError(
-        axios.isAxiosError(err)
-          ? err.response?.data?.message || 'Registration failed'
-          : 'An error occurred'
-      );
+      const message = axios.isAxiosError(err)
+        ? err.response?.data?.message || 'Registration failed'
+        : 'An error occurred';
+      setError(message);
+      toast.error(message);
     } finally {
       setLoading(false);
     }
@@ -66,7 +72,7 @@ export default function RegisterPage() {
           <h1 className="text-3xl font-bold text-slate-900 dark:text-white">
             Heyama
           </h1>
-          <p className="text-gray-600 dark:text-gray-400 mt-2">Create your account</p>
+          <p className="text-gray-600 dark:text-gray-400 mt-2">{t('auth.createAccount')}</p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4 bg-white dark:bg-slate-900 p-6 rounded-xl border border-gray-200 dark:border-gray-800 shadow-sm">
@@ -79,14 +85,14 @@ export default function RegisterPage() {
 
           <div>
             <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
-              Full Name
+              {t('auth.name')}
             </label>
             <Input
               type="text"
               name="name"
               value={formData.name}
               onChange={handleChange}
-              placeholder="John Doe"
+              placeholder={t('auth.namePlaceholder')}
               disabled={loading}
               required
             />
@@ -94,14 +100,14 @@ export default function RegisterPage() {
 
           <div>
             <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
-              Email
+              {t('auth.email')}
             </label>
             <Input
               type="email"
               name="email"
               value={formData.email}
               onChange={handleChange}
-              placeholder="you@example.com"
+              placeholder={t('auth.emailPlaceholder')}
               disabled={loading}
               required
             />
@@ -109,7 +115,7 @@ export default function RegisterPage() {
 
           <div>
             <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
-              Password
+              {t('auth.password')}
             </label>
             <Input
               type="password"
@@ -124,7 +130,7 @@ export default function RegisterPage() {
 
           <div>
             <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
-              Confirm Password
+              {t('auth.confirmPassword')}
             </label>
             <Input
               type="password"
@@ -139,14 +145,14 @@ export default function RegisterPage() {
 
           <Button type="submit" disabled={loading} className="w-full">
             {loading && <Loader2 className="w-4 h-4 animate-spin mr-2" />}
-            {loading ? 'Creating account...' : 'Sign Up'}
+            {loading ? t('auth.creatingAccount') : t('auth.signup')}
           </Button>
         </form>
 
         <p className="text-center text-sm text-gray-600 dark:text-gray-400">
-          Already have an account?{' '}
+          {t('auth.haveAccount')}{' '}
           <Link href="/auth/login" className="font-medium text-blue-600 dark:text-blue-400 hover:underline">
-            Login
+            {t('auth.loginHere')}
           </Link>
         </p>
       </div>

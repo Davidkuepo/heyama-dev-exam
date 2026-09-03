@@ -3,13 +3,18 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
+import { toast } from 'sonner';
 import { AlertCircle, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import Link from 'next/link';
+import { useAuth } from '@/components/auth-context';
+import { useI18n } from '@/components/i18n-context';
 
 export default function LoginPage() {
+  const { t } = useI18n();
   const router = useRouter();
+  const { setAuthData } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -28,14 +33,15 @@ export default function LoginPage() {
 
       localStorage.setItem('token', res.data.token);
       localStorage.setItem('user', JSON.stringify(res.data));
-
+      setAuthData(res.data.token, res.data);
+      toast.success(t('auth.loginSuccess'));
       router.push('/');
     } catch (err) {
-      setError(
-        axios.isAxiosError(err)
-          ? err.response?.data?.message || 'Login failed'
-          : 'An error occurred'
-      );
+      const message = axios.isAxiosError(err)
+        ? err.response?.data?.message || 'Login failed'
+        : 'An error occurred';
+      setError(message);
+      toast.error(message);
     } finally {
       setLoading(false);
     }
@@ -48,7 +54,7 @@ export default function LoginPage() {
           <h1 className="text-3xl font-bold text-slate-900 dark:text-white">
             Heyama
           </h1>
-          <p className="text-gray-600 dark:text-gray-400 mt-2">Sign in to your account</p>
+          <p className="text-gray-600 dark:text-gray-400 mt-2">{t('auth.signInTitle')}</p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4 bg-white dark:bg-slate-900 p-6 rounded-xl border border-gray-200 dark:border-gray-800 shadow-sm">
@@ -61,13 +67,13 @@ export default function LoginPage() {
 
           <div>
             <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
-              Email
+              {t('auth.email')}
             </label>
             <Input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="you@example.com"
+              placeholder={t('auth.emailPlaceholder')}
               disabled={loading}
               required
             />
@@ -75,7 +81,7 @@ export default function LoginPage() {
 
           <div>
             <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
-              Password
+              {t('auth.password')}
             </label>
             <Input
               type="password"
@@ -89,14 +95,14 @@ export default function LoginPage() {
 
           <Button type="submit" disabled={loading} className="w-full">
             {loading && <Loader2 className="w-4 h-4 animate-spin mr-2" />}
-            {loading ? 'Signing in...' : 'Sign In'}
+            {loading ? t('auth.signingIn') : t('auth.signIn')}
           </Button>
         </form>
 
         <p className="text-center text-sm text-gray-600 dark:text-gray-400">
-          Don't have an account?{' '}
+          {t('auth.noAccount')}{' '}
           <Link href="/auth/register" className="font-medium text-blue-600 dark:text-blue-400 hover:underline">
-            Register
+            {t('auth.registerHere')}
           </Link>
         </p>
       </div>

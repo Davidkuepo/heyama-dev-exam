@@ -12,7 +12,7 @@ export class HeyamaObject {
   description: string;
 
   @Prop({ required: true })
-  imageUrl: string;
+  imageData: string;
 
   @Prop({ default: Date.now })
   createdAt: Date;

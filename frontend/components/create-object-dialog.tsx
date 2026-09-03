@@ -6,12 +6,14 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import axios from 'axios';
 import apiClient from '@/lib/axios';
+import { toast } from 'sonner';
 import { Plus, Upload, Loader2, CheckCircle, AlertCircle } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { ImageUpload } from './image-upload';
+import { useI18n } from './i18n-context';
 
 const schema = z.object({
   title: z.string().min(3, 'Title must be at least 3 characters'),
@@ -26,6 +28,7 @@ interface CreateObjectDialogProps {
 }
 
 export function CreateObjectDialog({ onSuccess }: CreateObjectDialogProps) {
+  const { t } = useI18n();
   const [open, setOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -46,7 +49,7 @@ export function CreateObjectDialog({ onSuccess }: CreateObjectDialogProps) {
 
   const onSubmit = async (data: FormData) => {
     if (!data.image) {
-      setError('Please select an image');
+      setError(t('dialog.selectImage') || 'Please select an image');
       return;
     }
 
@@ -66,6 +69,7 @@ export function CreateObjectDialog({ onSuccess }: CreateObjectDialogProps) {
       });
 
       setSuccess(true);
+      toast.success(t('objects.createSuccess'));
       setTimeout(() => {
         reset();
         setOpen(false);
@@ -77,6 +81,7 @@ export function CreateObjectDialog({ onSuccess }: CreateObjectDialogProps) {
         ? err.response?.data?.message || 'Failed to create object'
         : 'An error occurred';
       setError(message);
+      toast.error(message);
     } finally {
       setIsLoading(false);
     }
@@ -90,13 +95,13 @@ export function CreateObjectDialog({ onSuccess }: CreateObjectDialogProps) {
         className="gap-2 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white shadow-lg hover:shadow-xl transition-all"
       >
         <Plus className="w-5 h-5" />
-        Create Object
+        {t('dialog.createObject')}
       </Button>
 
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent className="max-w-md w-full">
           <DialogHeader>
-            <DialogTitle className="text-2xl">Create New Object</DialogTitle>
+            <DialogTitle className="text-2xl">{t('dialog.createObject')}</DialogTitle>
           </DialogHeader>
 
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
@@ -106,10 +111,10 @@ export function CreateObjectDialog({ onSuccess }: CreateObjectDialogProps) {
             />
 
             <div className="space-y-2">
-              <label className="text-sm font-medium">Title</label>
+              <label className="text-sm font-medium">{t('dialog.title')}</label>
               <Input
                 {...register('title')}
-                placeholder="Enter object title"
+                placeholder={t('dialog.titlePlaceholder')}
                 disabled={isLoading}
               />
               {errors.title && (
@@ -118,10 +123,10 @@ export function CreateObjectDialog({ onSuccess }: CreateObjectDialogProps) {
             </div>
 
             <div className="space-y-2">
-              <label className="text-sm font-medium">Description</label>
+              <label className="text-sm font-medium">{t('dialog.description')}</label>
               <Textarea
                 {...register('description')}
-                placeholder="Describe your object..."
+                placeholder={t('dialog.descriptionPlaceholder')}
                 rows={4}
                 disabled={isLoading}
               />
@@ -142,7 +147,7 @@ export function CreateObjectDialog({ onSuccess }: CreateObjectDialogProps) {
             {success && (
               <div className="flex gap-2 p-3 rounded-lg bg-green-50 dark:bg-green-950 text-green-700 dark:text-green-200">
                 <CheckCircle className="w-5 h-5 flex-shrink-0" />
-                <p className="text-sm">Object created successfully!</p>
+                <p className="text-sm">{t('objects.createSuccess')}</p>
               </div>
             )}
 
@@ -152,7 +157,7 @@ export function CreateObjectDialog({ onSuccess }: CreateObjectDialogProps) {
               className="w-full gap-2 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
             >
               {isLoading && <Loader2 className="w-4 h-4 animate-spin" />}
-              {success ? 'Created!' : isLoading ? 'Creating...' : 'Create Object'}
+              {success ? t('dialog.created') : isLoading ? t('dialog.creating') : t('dialog.createObject')}
             </Button>
           </form>
         </DialogContent>

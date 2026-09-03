@@ -3,7 +3,6 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { ObjectsController } from './objects.controller';
 import { ObjectsService } from './objects.service';
 import { HeyamaObject, ObjectSchema } from './schemas/object.schema';
-import { S3Module } from '../s3/s3.module';
 import { WebSocketModule } from '../websocket/websocket.module';
 
 @Module({
@@ -11,7 +10,6 @@ import { WebSocketModule } from '../websocket/websocket.module';
     MongooseModule.forFeature([
       { name: HeyamaObject.name, schema: ObjectSchema },
     ]),
-    S3Module,
     WebSocketModule,
   ],
   controllers: [ObjectsController],

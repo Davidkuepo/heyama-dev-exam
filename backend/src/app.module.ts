@@ -3,7 +3,6 @@ import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AuthModule } from './auth/auth.module';
 import { ObjectsModule } from './objects/objects.module';
-import { S3Module } from './s3/s3.module';
 import { WebSocketModule } from './websocket/websocket.module';
 
 @Module({
@@ -17,7 +16,6 @@ import { WebSocketModule } from './websocket/websocket.module';
     ),
     AuthModule,
     ObjectsModule,
-    S3Module,
     WebSocketModule,
   ],
 })
