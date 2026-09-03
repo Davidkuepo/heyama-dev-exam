@@ -9,7 +9,7 @@ import { ConfirmDialog } from './confirm-dialog';
 import { useI18n } from './i18n-context';
 
 interface Object {
-  _id: string;
+  id: string;
   title: string;
   description: string;
   imageData: string;
@@ -84,7 +84,7 @@ export function ObjectCard({ object, onDelete }: ObjectCardProps) {
               className="flex-1 text-xs h-8"
               asChild
             >
-              <Link href={`/objects/${object._id}`}>
+              <Link href={`/objects/${object.id}`}>
                 {t('common.view')}
                 <ChevronRight className="w-3 h-3 ml-1" />
               </Link>

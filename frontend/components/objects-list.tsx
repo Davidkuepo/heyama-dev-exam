@@ -9,7 +9,7 @@ import { useSocket } from './socket-provider';
 import { useI18n } from './i18n-context';
 
 interface Object {
-  _id: string;
+  id: string;
   title: string;
   description: string;
   imageData: string;
@@ -63,7 +63,7 @@ export function ObjectsList({
     };
 
     const handleObjectDeleted = ({ id }: { id: string }) => {
-      setObjects((prev) => prev.filter((obj) => obj._id !== id));
+      setObjects((prev) => prev.filter((obj) => obj.id !== id));
     };
 
     socket.on('objectCreated', handleObjectCreated);
@@ -128,9 +128,9 @@ export function ObjectsList({
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 w-full">
         {filteredAndSortedObjects.map((object) => (
           <ObjectCard
-            key={object._id}
+            key={object.id}
             object={object}
-            onDelete={() => handleDelete(object._id)}
+            onDelete={() => handleDelete(object.id)}
           />
         ))}
       </div>

@@ -13,7 +13,7 @@ import { ConfirmDialog } from '@/components/confirm-dialog';
 import { useI18n } from '@/components/i18n-context';
 
 interface Object {
-  _id: string;
+  id: string;
   title: string;
   description: string;
   imageData: string;
@@ -157,7 +157,7 @@ export default function ObjectDetailPage() {
                   </div>
                   <div className="border-t border-blue-200 dark:border-blue-900 pt-4">
                     <p className="text-xs font-mono text-blue-600 dark:text-blue-400 break-all">
-                      {t('objects.id')}: {object._id}
+                      {t('objects.id')}: {object.id}
                     </p>
                   </div>
                 </div>
