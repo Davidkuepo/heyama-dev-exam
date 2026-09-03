@@ -1,10 +1,10 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument } from 'mongoose';
 
-export type ObjectDocument = HydratedDocument<Object>;
+export type ObjectDocument = HydratedDocument<HeyamaObject>;
 
 @Schema({ timestamps: true })
-export class Object {
+export class HeyamaObject {
   @Prop({ required: true })
   title: string;
 
@@ -21,4 +21,4 @@ export class Object {
   updatedAt: Date;
 }
 
-export const ObjectSchema = SchemaFactory.createForClass(Object);
+export const ObjectSchema = SchemaFactory.createForClass(HeyamaObject);

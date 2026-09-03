@@ -2,13 +2,13 @@ import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ObjectsController } from './objects.controller';
 import { ObjectsService } from './objects.service';
-import { Object, ObjectSchema } from './schemas/object.schema';
+import { HeyamaObject, ObjectSchema } from './schemas/object.schema';
 import { S3Module } from '../s3/s3.module';
 
 @Module({
   imports: [
     MongooseModule.forFeature([
-      { name: Object.name, schema: ObjectSchema },
+      { name: HeyamaObject.name, schema: ObjectSchema },
     ]),
     S3Module,
   ],

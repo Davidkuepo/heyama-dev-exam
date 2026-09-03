@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException, Inject } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { Object as HeyamaObject, ObjectDocument } from './schemas/object.schema';
+import { HeyamaObject, ObjectDocument } from './schemas/object.schema';
 import { CreateObjectDto } from './dto/create-object.dto';
 import { S3Service } from '../s3/s3.service';
 import { WebSocketGateway } from '../websocket/websocket.gateway';
