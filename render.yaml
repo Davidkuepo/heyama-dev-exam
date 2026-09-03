@@ -30,4 +30,3 @@ services:
   - type: pserv
     name: heyama-mongo
     plan: free
-    ipWhitelist: []
