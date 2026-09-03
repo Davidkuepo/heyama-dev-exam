@@ -4,7 +4,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { AuthModule } from './auth/auth.module';
 import { ObjectsModule } from './objects/objects.module';
 import { S3Module } from './s3/s3.module';
-import { WebSocketGateway } from './websocket/websocket.gateway';
+import { WebSocketModule } from './websocket/websocket.module';
 
 @Module({
   imports: [
@@ -18,7 +18,7 @@ import { WebSocketGateway } from './websocket/websocket.gateway';
     AuthModule,
     ObjectsModule,
     S3Module,
+    WebSocketModule,
   ],
-  providers: [WebSocketGateway],
 })
 export class AppModule {}
