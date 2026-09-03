@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, OneToMany } from 'typeorm';
-import { Object } from '../objects/object.entity';
+import { HeyamaObject } from '../objects/object.entity';
 
 @Entity('users')
 export class User {
@@ -18,6 +18,6 @@ export class User {
   @CreateDateColumn()
   createdAt: Date;
 
-  @OneToMany(() => Object, (obj) => obj.user, { cascade: true })
-  objects: Object[];
+  @OneToMany(() => HeyamaObject, (obj) => obj.user, { cascade: true })
+  objects: HeyamaObject[];
 }

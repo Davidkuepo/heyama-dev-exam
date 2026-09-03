@@ -1,14 +1,15 @@
 import { Injectable, NotFoundException, Inject } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Object } from './object.entity';
+import { HeyamaObject } from './object.entity';
 import { CreateObjectDto } from './dto/create-object.dto';
 import { WebSocketGateway } from '../websocket/websocket.gateway';
 
 @Injectable()
 export class ObjectsService {
   constructor(
-    @InjectRepository(Object) private objectRepository: Repository<Object>,
+    @InjectRepository(HeyamaObject)
+    private objectRepository: Repository<HeyamaObject>,
     @Inject(WebSocketGateway) private wsGateway: WebSocketGateway,
   ) {}
 

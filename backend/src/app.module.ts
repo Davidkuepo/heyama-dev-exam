@@ -5,7 +5,7 @@ import { AuthModule } from './auth/auth.module';
 import { ObjectsModule } from './objects/objects.module';
 import { WebSocketModule } from './websocket/websocket.module';
 import { User } from './users/user.entity';
-import { Object } from './objects/object.entity';
+import { HeyamaObject } from './objects/object.entity';
 
 @Module({
   imports: [
@@ -20,7 +20,7 @@ import { Object } from './objects/object.entity';
       username: process.env.DB_USER || 'postgres',
       password: process.env.DB_PASSWORD || 'postgres',
       database: process.env.DB_NAME || 'heyama',
-      entities: [User, Object],
+      entities: [User, HeyamaObject],
       synchronize: true,
       logging: false,
     }),

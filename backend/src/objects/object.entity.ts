@@ -2,7 +2,7 @@ import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, ManyToOne, Jo
 import { User } from '../users/user.entity';
 
 @Entity('objects')
-export class Object {
+export class HeyamaObject {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
