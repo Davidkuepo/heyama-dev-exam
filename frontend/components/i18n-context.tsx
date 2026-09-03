@@ -15,13 +15,13 @@ const I18nContext = createContext<I18nContextType | null>(null);
 
 export function I18nProvider({ children }: { children: ReactNode }) {
   const [language, setLanguageState] = useState<Language>('en');
-  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     const savedLang = (localStorage.getItem('lang') as Language) || 'en';
-    setLanguageState(savedLang);
-    setMounted(true);
-  }, []);
+    if (savedLang !== language) {
+      setLanguageState(savedLang);
+    }
+  }, [language]);
 
   const setLanguage = (lang: Language) => {
     setLanguageState(lang);
@@ -29,10 +29,6 @@ export function I18nProvider({ children }: { children: ReactNode }) {
   };
 
   const t = (key: string) => getMessage(language, key);
-
-  if (!mounted) {
-    return <>{children}</>;
-  }
 
   return (
     <I18nContext.Provider value={{ language, setLanguage, t }}>
