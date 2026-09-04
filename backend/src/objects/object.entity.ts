@@ -1,5 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, ManyToOne, JoinColumn } from 'typeorm';
-import { User } from '../users/user.entity';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn } from 'typeorm';
 
 @Entity('objects')
 export class HeyamaObject {
@@ -17,10 +16,6 @@ export class HeyamaObject {
 
   @CreateDateColumn()
   createdAt: Date;
-
-  @ManyToOne(() => User, (user) => user.objects)
-  @JoinColumn({ name: 'userId' })
-  user: User;
 
   @Column({ type: 'uuid' })
   userId: string;
