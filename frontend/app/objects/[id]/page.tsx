@@ -6,7 +6,6 @@ import apiClient from '@/lib/axios';
 import { toast } from 'sonner';
 import { ArrowLeft, Loader2, AlertCircle, Trash2, Calendar } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { PrivateRoute } from '@/components/private-route';
 import { Header } from '@/components/header';
 import { Footer } from '@/components/footer';
 import { ConfirmDialog } from '@/components/confirm-dialog';
@@ -95,8 +94,7 @@ export default function ObjectDetailPage() {
   });
 
   return (
-    <PrivateRoute>
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-950 dark:to-slate-900 flex flex-col">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-950 dark:to-slate-900 flex flex-col">
         <Header />
 
         <main className="flex-1 container mx-auto px-4 max-w-5xl py-8">
@@ -200,6 +198,5 @@ export default function ObjectDetailPage() {
           onCancel={() => setShowDeleteConfirm(false)}
         />
       </div>
-    </PrivateRoute>
-  );
-}
+    );
+  }

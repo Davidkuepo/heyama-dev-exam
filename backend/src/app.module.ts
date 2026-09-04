@@ -1,10 +1,8 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AuthModule } from './auth/auth.module';
 import { ObjectsModule } from './objects/objects.module';
 import { WebSocketModule } from './websocket/websocket.module';
-import { User } from './users/user.entity';
 import { HeyamaObject } from './objects/object.entity';
 
 @Module({
@@ -20,11 +18,10 @@ import { HeyamaObject } from './objects/object.entity';
       username: process.env.DB_USER || 'postgres',
       password: process.env.DB_PASSWORD || 'postgres',
       database: process.env.DB_NAME || 'heyama',
-      entities: [User, HeyamaObject],
+      entities: [HeyamaObject],
       synchronize: true,
       logging: false,
     }),
-    AuthModule,
     ObjectsModule,
     WebSocketModule,
   ],

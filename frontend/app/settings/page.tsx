@@ -1,12 +1,10 @@
 'use client';
 
-
 import { useRouter } from 'next/navigation';
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Header } from '@/components/header';
 import { Footer } from '@/components/footer';
-import { PrivateRoute } from '@/components/private-route';
 import { useI18n } from '@/components/i18n-context';
 
 export default function SettingsPage() {
@@ -14,7 +12,6 @@ export default function SettingsPage() {
   const router = useRouter();
 
   return (
-    <PrivateRoute>
       <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-950 dark:to-slate-900 flex flex-col">
         <Header />
 
@@ -58,6 +55,5 @@ export default function SettingsPage() {
 
         <Footer />
       </div>
-    </PrivateRoute>
-  );
-}
+    );
+  }

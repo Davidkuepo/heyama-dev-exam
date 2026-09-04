@@ -5,19 +5,15 @@ import {
   Delete,
   Param,
   UseInterceptors,
-  UseGuards,
   UploadedFile,
   Body,
   BadRequestException,
-  Req,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ObjectsService } from './objects.service';
-import { JwtAuthGuard } from '../auth/jwt.guard';
 import { CreateObjectDto } from './dto/create-object.dto';
 
 @Controller('objects')
-@UseGuards(JwtAuthGuard)
 export class ObjectsController {
   constructor(private readonly objectsService: ObjectsService) {}
 
@@ -26,13 +22,12 @@ export class ObjectsController {
   async create(
     @Body() createObjectDto: CreateObjectDto,
     @UploadedFile() file: Express.Multer.File,
-    @Req() req: any,
   ) {
     if (!file) {
       throw new BadRequestException('Image file is required');
     }
 
-    const userId = req.user.sub;
+    const userId = '00000000-0000-0000-0000-000000000000';
     return this.objectsService.create(createObjectDto, file, userId);
   }
 

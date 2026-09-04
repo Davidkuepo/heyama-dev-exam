@@ -6,7 +6,6 @@ import { ObjectsList } from '@/components/objects-list';
 import { CreateObjectDialog } from '@/components/create-object-dialog';
 import { Header } from '@/components/header';
 import { Footer } from '@/components/footer';
-import { PrivateRoute } from '@/components/private-route';
 import { useI18n } from '@/components/i18n-context';
 
 export default function Home() {
@@ -28,7 +27,6 @@ export default function Home() {
   };
 
   return (
-    <PrivateRoute>
       <div className="min-h-screen bg-white dark:bg-slate-950 flex flex-col">
         <Header onSearch={handleSearch} />
 
@@ -82,6 +80,5 @@ export default function Home() {
 
         <Footer />
       </div>
-    </PrivateRoute>
-  );
-}
+    );
+  }
